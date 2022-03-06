@@ -19,12 +19,17 @@ type AppService interface {
 	Withdraw(id string, amount int64) (*walletDomain.Wallet, error)
 }
 
+type IdempotencyMiddleware interface {
+	Handler() gin.HandlerFunc
+}
+
 type Router struct {
-	service AppService
+	service     AppService
+	idempotency IdempotencyMiddleware
 }
 
 func (router *Router) create(r *gin.Engine) {
-	r.POST("/wallets", func(c *gin.Context) {
+	r.POST("/wallets", router.idempotency.Handler(), func(c *gin.Context) {
 		wallet, err := router.service.Create()
 
 		if err != nil {
@@ -57,7 +62,7 @@ type BodyWithAmount struct {
 }
 
 func (router *Router) deposit(r *gin.Engine) {
-	r.POST("/wallets/:id/deposit", func(c *gin.Context) {
+	r.POST("/wallets/:id/deposit", router.idempotency.Handler(), func(c *gin.Context) {
 		id := c.Param("id")
 		var body BodyWithAmount
 		if err := c.ShouldBindJSON(&body); err != nil {
@@ -77,7 +82,7 @@ func (router *Router) deposit(r *gin.Engine) {
 }
 
 func (router *Router) withdraw(r *gin.Engine) {
-	r.POST("/wallets/:id/withdraw", func(c *gin.Context) {
+	r.POST("/wallets/:id/withdraw", router.idempotency.Handler(), func(c *gin.Context) {
 		id := c.Param("id")
 		var body BodyWithAmount
 		if err := c.ShouldBindJSON(&body); err != nil {
@@ -96,14 +101,15 @@ func (router *Router) withdraw(r *gin.Engine) {
 	})
 }
 
-func InitRouter(service AppService) {
+func InitRouter(service AppService, repository Repository) {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
 	r := gin.Default()
+	idempotency := NewIdempotencyMiddleware(repository)
 
 	// register endpoints
-	router := Router{service: service}
+	router := Router{service: service, idempotency: idempotency}
 	router.get(r)
 	router.create(r)
 	router.deposit(r)

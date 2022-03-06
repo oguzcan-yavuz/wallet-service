@@ -6,7 +6,8 @@ import (
 )
 
 func main() {
-	repo := infra.NewPostgresRepository()
-	service := app.NewService(repo)
-	infra.InitRouter(service)
+	postgresRepo := infra.NewPostgresRepository()
+	redisRepo := infra.NewRedisRepository()
+	service := app.NewService(postgresRepo)
+	infra.InitRouter(service, redisRepo)
 }
