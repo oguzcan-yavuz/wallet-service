@@ -3,6 +3,7 @@ package infra
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
+	"os"
 	"time"
 )
 
@@ -14,7 +15,7 @@ var ctx = context.Background()
 
 func NewRedisRepository() *RedisRepository {
 	rdb := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     os.Getenv("REDIS_ADDR"),
 		Password: "",
 		DB:       0,
 	})

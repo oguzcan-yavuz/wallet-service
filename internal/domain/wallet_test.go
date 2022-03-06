@@ -1,4 +1,4 @@
-package wallet
+package domain
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -63,12 +63,14 @@ func TestWallet_Withdraw_InsufficientBalance(t *testing.T) {
 }
 
 func TestWallet_Withdraw_ShouldSubtract(t *testing.T) {
+	// Arrange
 	wallet := &Wallet{
 		Id:      "test",
 		Balance: 100,
 	}
 	amount := int64(50)
 
+	// Act
 	err := wallet.Withdraw(amount)
 
 	// Assert
@@ -109,12 +111,14 @@ func TestWallet_Deposit_ZeroAmount(t *testing.T) {
 }
 
 func TestWallet_Deposit_ShouldAdd(t *testing.T) {
+	// Arrange
 	wallet := &Wallet{
 		Id:      "test",
 		Balance: 100,
 	}
 	amount := int64(50)
 
+	// Act
 	err := wallet.Deposit(amount)
 
 	// Assert

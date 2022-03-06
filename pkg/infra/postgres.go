@@ -3,7 +3,8 @@ package infra
 import (
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
-	walletDomain "github.com/oguzcan-yavuz/wallet-service/internal/domain/wallet"
+	"github.com/oguzcan-yavuz/wallet-service/internal/domain"
+	"os"
 )
 
 type WalletDTO struct {
@@ -11,8 +12,8 @@ type WalletDTO struct {
 	Balance int64  `json:"balance"`
 }
 
-func (w *WalletDTO) ToDomain() *walletDomain.Wallet {
-	return &walletDomain.Wallet{
+func (w *WalletDTO) ToDomain() *domain.Wallet {
+	return &domain.Wallet{
 		Id:      w.Id,
 		Balance: w.Balance,
 	}
@@ -27,9 +28,8 @@ func NewPostgresRepository() *PostgresRepository {
 		User:     "postgres",
 		Password: "postgres",
 		Database: "postgres",
-		Addr:     "localhost:5432",
+		Addr:     os.Getenv("POSTGRES_ADDR"),
 	})
-	// Normally you would run migrations manually
 	err := db.Model(&WalletDTO{}).CreateTable(&orm.CreateTableOptions{
 		Temp: true,
 	})
@@ -47,14 +47,14 @@ func (repo *PostgresRepository) Get(id string) (*WalletDTO, error) {
 	return walletDTO, err
 }
 
-func (repo *PostgresRepository) Create(wallet *walletDomain.Wallet) (*WalletDTO, error) {
+func (repo *PostgresRepository) Create(wallet *domain.Wallet) (*WalletDTO, error) {
 	walletDTO := &WalletDTO{Id: wallet.Id, Balance: wallet.Balance}
 	_, err := repo.db.Model(walletDTO).Insert()
 
 	return walletDTO, err
 }
 
-func (repo *PostgresRepository) Update(wallet *walletDomain.Wallet) (*WalletDTO, error) {
+func (repo *PostgresRepository) Update(wallet *domain.Wallet) (*WalletDTO, error) {
 	walletDTO := &WalletDTO{Id: wallet.Id, Balance: wallet.Balance}
 	_, err := repo.db.Model(walletDTO).WherePK().Update()
 

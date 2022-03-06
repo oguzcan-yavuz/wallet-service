@@ -1,14 +1,14 @@
 package app
 
 import (
-	walletDomain "github.com/oguzcan-yavuz/wallet-service/internal/domain/wallet"
+	"github.com/oguzcan-yavuz/wallet-service/internal/domain"
 	"github.com/oguzcan-yavuz/wallet-service/pkg/infra"
 )
 
 type Repository interface {
 	Get(id string) (*infra.WalletDTO, error)
-	Create(wallet *walletDomain.Wallet) (*infra.WalletDTO, error)
-	Update(wallet *walletDomain.Wallet) (*infra.WalletDTO, error)
+	Create(wallet *domain.Wallet) (*infra.WalletDTO, error)
+	Update(wallet *domain.Wallet) (*infra.WalletDTO, error)
 }
 
 type service struct {
@@ -19,7 +19,7 @@ func NewService(repository Repository) *service {
 	return &service{repo: repository}
 }
 
-func (s service) Get(id string) (*walletDomain.Wallet, error) {
+func (s service) Get(id string) (*domain.Wallet, error) {
 	walletDTO, err := s.repo.Get(id)
 	if err != nil {
 		return nil, err
@@ -30,8 +30,8 @@ func (s service) Get(id string) (*walletDomain.Wallet, error) {
 	return wallet, nil
 }
 
-func (s service) Create() (*walletDomain.Wallet, error) {
-	wallet, err := walletDomain.NewWallet()
+func (s service) Create() (*domain.Wallet, error) {
+	wallet, err := domain.NewWallet()
 	if err != nil {
 		return nil, err
 	}
@@ -44,7 +44,7 @@ func (s service) Create() (*walletDomain.Wallet, error) {
 	return wallet, nil
 }
 
-func (s service) Withdraw(id string, amount int64) (*walletDomain.Wallet, error) {
+func (s service) Withdraw(id string, amount int64) (*domain.Wallet, error) {
 	walletDTO, err := s.repo.Get(id)
 	if err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (s service) Withdraw(id string, amount int64) (*walletDomain.Wallet, error)
 	return wallet, nil
 }
 
-func (s service) Deposit(id string, amount int64) (*walletDomain.Wallet, error) {
+func (s service) Deposit(id string, amount int64) (*domain.Wallet, error) {
 	walletDTO, err := s.repo.Get(id)
 	if err != nil {
 		return nil, err

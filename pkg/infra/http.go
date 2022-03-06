@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	walletDomain "github.com/oguzcan-yavuz/wallet-service/internal/domain/wallet"
+	"github.com/oguzcan-yavuz/wallet-service/internal/domain"
 	"log"
 	"net/http"
 	"os/signal"
@@ -13,10 +13,10 @@ import (
 )
 
 type AppService interface {
-	Get(id string) (*walletDomain.Wallet, error)
-	Create() (*walletDomain.Wallet, error)
-	Deposit(id string, amount int64) (*walletDomain.Wallet, error)
-	Withdraw(id string, amount int64) (*walletDomain.Wallet, error)
+	Get(id string) (*domain.Wallet, error)
+	Create() (*domain.Wallet, error)
+	Deposit(id string, amount int64) (*domain.Wallet, error)
+	Withdraw(id string, amount int64) (*domain.Wallet, error)
 }
 
 type IdempotencyMiddleware interface {

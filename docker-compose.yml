@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    environment:
+      - POSTGRES_ADDR=db:5432
+      - REDIS_ADDR=redis:6379
+    links:
+      - db
+      - redis
+    networks:
+      - wallet_service_backend
+
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - wallet_service_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - wallet_service_backend
+    command: ["postgres", "-c", "log_statement=all"]
+
+  redis:
+    image: "bitnami/redis:latest"
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - "6379:6379"
+    networks:
+      - wallet_service_backend
+
+volumes:
+  wallet_service_data:
+
+networks:
+  wallet_service_backend:

@@ -1,0 +1,24 @@
+### create a wallet
+POST http://localhost:8080/wallets
+Idempotency-Key: {{ uuid }}
+
+### get a wallet
+GET http://localhost:8080/wallets/5ec7ebf4-9d72-11ec-9802-acde48001122
+
+### deposit into a wallet
+POST http://localhost:8080/wallets/5ec7ebf4-9d72-11ec-9802-acde48001122/deposit
+Content-Type: application/json
+Idempotency-Key: {{ $uuid }}
+
+{
+  "amount": 100
+}
+
+### withdraw from a wallet
+POST http://localhost:8080/wallets/5ec7ebf4-9d72-11ec-9802-acde48001122/withdraw
+Content-Type: application/json
+Idempotency-Key: {{ $uuid }}
+
+{
+  "amount": 50
+}
