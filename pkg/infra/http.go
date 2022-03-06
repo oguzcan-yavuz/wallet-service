@@ -14,10 +14,27 @@ import (
 
 type AppService interface {
 	Get(id string) (*walletDomain.Wallet, error)
+	Create() (*walletDomain.Wallet, error)
+	Deposit(id string, amount int64) (*walletDomain.Wallet, error)
+	Withdraw(id string, amount int64) (*walletDomain.Wallet, error)
 }
 
 type Router struct {
 	service AppService
+}
+
+func (router *Router) create(r *gin.Engine) {
+	r.POST("/wallets", func(c *gin.Context) {
+		wallet, err := router.service.Create()
+
+		if err != nil {
+			fmt.Println(err)
+			c.String(500, err.Error())
+			return
+		}
+
+		c.JSON(201, wallet)
+	})
 }
 
 func (router *Router) get(r *gin.Engine) {
@@ -25,6 +42,50 @@ func (router *Router) get(r *gin.Engine) {
 		id := c.Param("id")
 		wallet, err := router.service.Get(id)
 
+		if err != nil {
+			fmt.Println(err)
+			c.String(500, err.Error())
+			return
+		}
+
+		c.JSON(200, wallet)
+	})
+}
+
+type BodyWithAmount struct {
+	Amount int64 `json:"amount"`
+}
+
+func (router *Router) deposit(r *gin.Engine) {
+	r.POST("/wallets/:id/deposit", func(c *gin.Context) {
+		id := c.Param("id")
+		var body BodyWithAmount
+		if err := c.ShouldBindJSON(&body); err != nil {
+			c.String(400, "invalid amount")
+			return
+		}
+
+		wallet, err := router.service.Deposit(id, body.Amount)
+		if err != nil {
+			fmt.Println(err)
+			c.String(500, err.Error())
+			return
+		}
+
+		c.JSON(200, wallet)
+	})
+}
+
+func (router *Router) withdraw(r *gin.Engine) {
+	r.POST("/wallets/:id/withdraw", func(c *gin.Context) {
+		id := c.Param("id")
+		var body BodyWithAmount
+		if err := c.ShouldBindJSON(&body); err != nil {
+			c.String(400, "invalid amount")
+			return
+		}
+
+		wallet, err := router.service.Withdraw(id, body.Amount)
 		if err != nil {
 			fmt.Println(err)
 			c.String(500, err.Error())
@@ -44,6 +105,9 @@ func InitRouter(service AppService) {
 	// register endpoints
 	router := Router{service: service}
 	router.get(r)
+	router.create(r)
+	router.deposit(r)
+	router.withdraw(r)
 
 	srv := &http.Server{
 		Addr:    ":8080",

@@ -41,8 +41,22 @@ func NewPostgresRepository() *PostgresRepository {
 }
 
 func (repo *PostgresRepository) Get(id string) (*WalletDTO, error) {
-	wallet := &WalletDTO{Id: id}
-	err := repo.db.Model(wallet).WherePK().Select()
+	walletDTO := &WalletDTO{Id: id}
+	err := repo.db.Model(walletDTO).WherePK().Select()
 
-	return wallet, err
+	return walletDTO, err
+}
+
+func (repo *PostgresRepository) Create(wallet *walletDomain.Wallet) (*WalletDTO, error) {
+	walletDTO := &WalletDTO{Id: wallet.Id, Balance: wallet.Balance}
+	_, err := repo.db.Model(walletDTO).Insert()
+
+	return walletDTO, err
+}
+
+func (repo *PostgresRepository) Update(wallet *walletDomain.Wallet) (*WalletDTO, error) {
+	walletDTO := &WalletDTO{Id: wallet.Id, Balance: wallet.Balance}
+	_, err := repo.db.Model(walletDTO).WherePK().Update()
+
+	return walletDTO, err
 }
