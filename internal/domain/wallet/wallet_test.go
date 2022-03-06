@@ -1,6 +1,7 @@
 package wallet
 
 import (
+	"github.com/oguzcan-yavuz/wallet-service/pkg/infra"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -120,4 +121,16 @@ func TestWallet_Deposit_ShouldAdd(t *testing.T) {
 	// Assert
 	assert.Nil(t, err)
 	assert.Equal(t, wallet.balance, int64(150))
+}
+
+func TestWallet_NewWalletFromDTO(t *testing.T) {
+	walletDTO := &infra.WalletDTO{
+		Id:      "test",
+		Balance: 100,
+	}
+
+	wallet := NewWalletFromDTO(walletDTO)
+
+	assert.Equal(t, wallet.id, walletDTO.Id)
+	assert.Equal(t, wallet.balance, walletDTO.Balance)
 }

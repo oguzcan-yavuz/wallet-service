@@ -3,6 +3,7 @@ package wallet
 import (
 	"errors"
 	"github.com/google/uuid"
+	"github.com/oguzcan-yavuz/wallet-service/pkg/infra"
 )
 
 type Wallet struct {
@@ -23,6 +24,15 @@ func NewWallet() (*Wallet, error) {
 	}
 
 	return wallet, nil
+}
+
+func NewWalletFromDTO(walletDTO *infra.WalletDTO) *Wallet {
+	wallet := Wallet{
+		id:      walletDTO.Id,
+		balance: walletDTO.Balance,
+	}
+
+	return &wallet
 }
 
 func (w *Wallet) Withdraw(amount int64) error {
