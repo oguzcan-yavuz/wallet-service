@@ -6,6 +6,10 @@ import (
 	"github.com/oguzcan-yavuz/wallet-service/pkg/infra"
 )
 
+// @title Wallet-Service
+// @version 1.0
+// @description Wallet Service REST API.
+
 func main() {
 	err := godotenv.Load()
 	if err != nil {

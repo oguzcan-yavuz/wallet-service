@@ -17,7 +17,7 @@ func TestWallet_NewWallet(t *testing.T) {
 func TestWallet_Withdraw_NegativeAmount(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		Id:      "test",
+		ID:      "test",
 		Balance: 100,
 	}
 	amount := int64(-50)
@@ -33,7 +33,7 @@ func TestWallet_Withdraw_NegativeAmount(t *testing.T) {
 func TestWallet_Withdraw_ZeroAmount(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		Id:      "test",
+		ID:      "test",
 		Balance: 100,
 	}
 	amount := int64(0)
@@ -49,7 +49,7 @@ func TestWallet_Withdraw_ZeroAmount(t *testing.T) {
 func TestWallet_Withdraw_InsufficientBalance(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		Id:      "test",
+		ID:      "test",
 		Balance: 100,
 	}
 	amount := int64(500)
@@ -65,7 +65,7 @@ func TestWallet_Withdraw_InsufficientBalance(t *testing.T) {
 func TestWallet_Withdraw_ShouldSubtract(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		Id:      "test",
+		ID:      "test",
 		Balance: 100,
 	}
 	amount := int64(50)
@@ -81,7 +81,7 @@ func TestWallet_Withdraw_ShouldSubtract(t *testing.T) {
 func TestWallet_Deposit_NegativeAmount(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		Id:      "test",
+		ID:      "test",
 		Balance: 100,
 	}
 	amount := int64(-50)
@@ -97,7 +97,7 @@ func TestWallet_Deposit_NegativeAmount(t *testing.T) {
 func TestWallet_Deposit_ZeroAmount(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		Id:      "test",
+		ID:      "test",
 		Balance: 100,
 	}
 	amount := int64(0)
@@ -113,7 +113,7 @@ func TestWallet_Deposit_ZeroAmount(t *testing.T) {
 func TestWallet_Deposit_ShouldAdd(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		Id:      "test",
+		ID:      "test",
 		Balance: 100,
 	}
 	amount := int64(50)

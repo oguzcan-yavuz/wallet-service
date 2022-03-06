@@ -14,7 +14,7 @@ type WalletDTO struct {
 
 func (w *WalletDTO) ToDomain() *domain.Wallet {
 	return &domain.Wallet{
-		Id:      w.Id,
+		ID:      w.Id,
 		Balance: w.Balance,
 	}
 }
@@ -48,14 +48,14 @@ func (repo *PostgresRepository) Get(id string) (*WalletDTO, error) {
 }
 
 func (repo *PostgresRepository) Create(wallet *domain.Wallet) (*WalletDTO, error) {
-	walletDTO := &WalletDTO{Id: wallet.Id, Balance: wallet.Balance}
+	walletDTO := &WalletDTO{Id: wallet.ID, Balance: wallet.Balance}
 	_, err := repo.db.Model(walletDTO).Insert()
 
 	return walletDTO, err
 }
 
 func (repo *PostgresRepository) Update(wallet *domain.Wallet) (*WalletDTO, error) {
-	walletDTO := &WalletDTO{Id: wallet.Id, Balance: wallet.Balance}
+	walletDTO := &WalletDTO{Id: wallet.ID, Balance: wallet.Balance}
 	_, err := repo.db.Model(walletDTO).WherePK().Update()
 
 	return walletDTO, err

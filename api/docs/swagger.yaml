@@ -1,0 +1,149 @@
+definitions:
+  infra.UpdateWalletRequestDTO:
+    properties:
+      amount:
+        example: 100
+        type: integer
+    type: object
+  infra.WalletResponseDTO:
+    properties:
+      balance:
+        example: 100
+        type: integer
+      id:
+        example: 5ec7ebf4-9d72-11ec-9802-acde48001122
+        type: string
+    type: object
+info:
+  contact: {}
+  description: Wallet Service REST API.
+  title: Wallet-Service
+  version: "1.0"
+paths:
+  /wallets:
+    post:
+      consumes:
+      - application/json
+      description: Creates a wallet
+      parameters:
+      - description: UUID for idempotency key
+        in: header
+        name: Idempotency-Key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: success response
+          schema:
+            $ref: '#/definitions/infra.WalletResponseDTO'
+        "500":
+          description: error message
+          schema:
+            type: string
+      tags:
+      - wallets
+  /wallets/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Gets a wallet
+      parameters:
+      - description: Wallet ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success response
+          schema:
+            $ref: '#/definitions/infra.WalletResponseDTO'
+        "500":
+          description: error message
+          schema:
+            type: string
+      tags:
+      - wallets
+  /wallets/{id}/deposit:
+    post:
+      consumes:
+      - application/json
+      description: Deposits into a wallet
+      parameters:
+      - description: UUID for idempotency key
+        in: header
+        name: Idempotency-Key
+        required: true
+        type: string
+      - description: Wallet ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: deposit amount
+        in: body
+        name: DepositWalletRequest
+        required: true
+        schema:
+          $ref: '#/definitions/infra.UpdateWalletRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success response
+          schema:
+            $ref: '#/definitions/infra.WalletResponseDTO'
+        "400":
+          description: error message
+          schema:
+            type: string
+        "500":
+          description: error message
+          schema:
+            type: string
+      tags:
+      - wallets
+  /wallets/{id}/withdraw:
+    post:
+      consumes:
+      - application/json
+      description: Withdraws from a wallet
+      parameters:
+      - description: UUID for idempotency key
+        in: header
+        name: Idempotency-Key
+        required: true
+        type: string
+      - description: Wallet ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: withdraw amount
+        in: body
+        name: WithdrawWalletRequest
+        required: true
+        schema:
+          $ref: '#/definitions/infra.UpdateWalletRequestDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success response
+          schema:
+            $ref: '#/definitions/infra.WalletResponseDTO'
+        "400":
+          description: error message
+          schema:
+            type: string
+        "500":
+          description: error message
+          schema:
+            type: string
+      tags:
+      - wallets
+swagger: "2.0"

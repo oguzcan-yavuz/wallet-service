@@ -1,0 +1,227 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Wallet Service REST API.",
+        "title": "Wallet-Service",
+        "contact": {},
+        "version": "1.0"
+    },
+    "paths": {
+        "/wallets": {
+            "post": {
+                "description": "Creates a wallet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wallets"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID for idempotency key",
+                        "name": "Idempotency-Key",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "success response",
+                        "schema": {
+                            "$ref": "#/definitions/infra.WalletResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "error message",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/wallets/{id}": {
+            "get": {
+                "description": "Gets a wallet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wallets"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Wallet ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response",
+                        "schema": {
+                            "$ref": "#/definitions/infra.WalletResponseDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "error message",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/wallets/{id}/deposit": {
+            "post": {
+                "description": "Deposits into a wallet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wallets"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID for idempotency key",
+                        "name": "Idempotency-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Wallet ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "deposit amount",
+                        "name": "DepositWalletRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/infra.UpdateWalletRequestDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response",
+                        "schema": {
+                            "$ref": "#/definitions/infra.WalletResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "error message",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "error message",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/wallets/{id}/withdraw": {
+            "post": {
+                "description": "Withdraws from a wallet",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wallets"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "UUID for idempotency key",
+                        "name": "Idempotency-Key",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Wallet ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "withdraw amount",
+                        "name": "WithdrawWalletRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/infra.UpdateWalletRequestDTO"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success response",
+                        "schema": {
+                            "$ref": "#/definitions/infra.WalletResponseDTO"
+                        }
+                    },
+                    "400": {
+                        "description": "error message",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "error message",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "infra.UpdateWalletRequestDTO": {
+            "type": "object",
+            "properties": {
+                "amount": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
+        "infra.WalletResponseDTO": {
+            "type": "object",
+            "properties": {
+                "balance": {
+                    "type": "integer",
+                    "example": 100
+                },
+                "id": {
+                    "type": "string",
+                    "example": "5ec7ebf4-9d72-11ec-9802-acde48001122"
+                }
+            }
+        }
+    }
+}

@@ -6,7 +6,7 @@ import (
 )
 
 type Wallet struct {
-	Id      string
+	ID      string
 	Balance int64
 }
 
@@ -18,7 +18,7 @@ func NewWallet() (*Wallet, error) {
 	}
 
 	wallet := &Wallet{
-		Id:      id.String(),
+		ID:      id.String(),
 		Balance: 0,
 	}
 

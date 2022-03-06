@@ -2,7 +2,7 @@
 
 1. Clone the repository
 
-       git clone git@github.com:oguzcan-yavuz/bluelabs-wallet-service.git && cd bluelabs-wallet-service
+       git clone git@github.com:oguzcan-yavuz/wallet-service.git && cd wallet-service
 
 2. To run the project you can either run everything with docker-compose:
 
@@ -15,4 +15,4 @@
        go run cmd/api/main.go
 
 
-5. To interact with the API, please see example requests in the [test.http](test.http) file
+5. To interact with the API, you can use swagger at: http://localhost:8080/swagger/index.html or see example requests in the [test.http](test.http) file
