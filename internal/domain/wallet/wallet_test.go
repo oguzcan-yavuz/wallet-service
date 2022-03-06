@@ -1,7 +1,6 @@
 package wallet
 
 import (
-	"github.com/oguzcan-yavuz/wallet-service/pkg/infra"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -12,14 +11,14 @@ func TestWallet_NewWallet(t *testing.T) {
 
 	// Assert
 	assert.Nil(t, err)
-	assert.Equal(t, wallet.balance, int64(0))
+	assert.Equal(t, wallet.Balance, int64(0))
 }
 
 func TestWallet_Withdraw_NegativeAmount(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		id:      "test",
-		balance: 100,
+		Id:      "test",
+		Balance: 100,
 	}
 	amount := int64(-50)
 
@@ -28,14 +27,14 @@ func TestWallet_Withdraw_NegativeAmount(t *testing.T) {
 
 	// Assert
 	assert.NotNil(t, err)
-	assert.Equal(t, wallet.balance, int64(100))
+	assert.Equal(t, wallet.Balance, int64(100))
 }
 
 func TestWallet_Withdraw_ZeroAmount(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		id:      "test",
-		balance: 100,
+		Id:      "test",
+		Balance: 100,
 	}
 	amount := int64(0)
 
@@ -44,14 +43,14 @@ func TestWallet_Withdraw_ZeroAmount(t *testing.T) {
 
 	// Assert
 	assert.NotNil(t, err)
-	assert.Equal(t, wallet.balance, int64(100))
+	assert.Equal(t, wallet.Balance, int64(100))
 }
 
 func TestWallet_Withdraw_InsufficientBalance(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		id:      "test",
-		balance: 100,
+		Id:      "test",
+		Balance: 100,
 	}
 	amount := int64(500)
 
@@ -60,13 +59,13 @@ func TestWallet_Withdraw_InsufficientBalance(t *testing.T) {
 
 	// Assert
 	assert.NotNil(t, err)
-	assert.Equal(t, wallet.balance, int64(100))
+	assert.Equal(t, wallet.Balance, int64(100))
 }
 
 func TestWallet_Withdraw_ShouldSubtract(t *testing.T) {
 	wallet := &Wallet{
-		id:      "test",
-		balance: 100,
+		Id:      "test",
+		Balance: 100,
 	}
 	amount := int64(50)
 
@@ -74,14 +73,14 @@ func TestWallet_Withdraw_ShouldSubtract(t *testing.T) {
 
 	// Assert
 	assert.Nil(t, err)
-	assert.Equal(t, wallet.balance, int64(50))
+	assert.Equal(t, wallet.Balance, int64(50))
 }
 
 func TestWallet_Deposit_NegativeAmount(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		id:      "test",
-		balance: 100,
+		Id:      "test",
+		Balance: 100,
 	}
 	amount := int64(-50)
 
@@ -90,14 +89,14 @@ func TestWallet_Deposit_NegativeAmount(t *testing.T) {
 
 	// Assert
 	assert.NotNil(t, err)
-	assert.Equal(t, wallet.balance, int64(100))
+	assert.Equal(t, wallet.Balance, int64(100))
 }
 
 func TestWallet_Deposit_ZeroAmount(t *testing.T) {
 	// Arrange
 	wallet := &Wallet{
-		id:      "test",
-		balance: 100,
+		Id:      "test",
+		Balance: 100,
 	}
 	amount := int64(0)
 
@@ -106,13 +105,13 @@ func TestWallet_Deposit_ZeroAmount(t *testing.T) {
 
 	// Assert
 	assert.NotNil(t, err)
-	assert.Equal(t, wallet.balance, int64(100))
+	assert.Equal(t, wallet.Balance, int64(100))
 }
 
 func TestWallet_Deposit_ShouldAdd(t *testing.T) {
 	wallet := &Wallet{
-		id:      "test",
-		balance: 100,
+		Id:      "test",
+		Balance: 100,
 	}
 	amount := int64(50)
 
@@ -120,17 +119,5 @@ func TestWallet_Deposit_ShouldAdd(t *testing.T) {
 
 	// Assert
 	assert.Nil(t, err)
-	assert.Equal(t, wallet.balance, int64(150))
-}
-
-func TestWallet_NewWalletFromDTO(t *testing.T) {
-	walletDTO := &infra.WalletDTO{
-		Id:      "test",
-		Balance: 100,
-	}
-
-	wallet := NewWalletFromDTO(walletDTO)
-
-	assert.Equal(t, wallet.id, walletDTO.Id)
-	assert.Equal(t, wallet.balance, walletDTO.Balance)
+	assert.Equal(t, wallet.Balance, int64(150))
 }

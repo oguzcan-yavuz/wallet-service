@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/oguzcan-yavuz/wallet-service/internal/domain/wallet"
+	walletDomain "github.com/oguzcan-yavuz/wallet-service/internal/domain/wallet"
 	"github.com/oguzcan-yavuz/wallet-service/pkg/infra"
 )
 
@@ -17,14 +17,14 @@ func NewService(repository Repository) *service {
 	return &service{repo: repository}
 }
 
-func (s service) Get(id string) (*wallet.Wallet, error) {
+func (s service) Get(id string) (*walletDomain.Wallet, error) {
 	walletDTO, err := s.repo.Get(id)
 
 	if err != nil {
 		return nil, err
 	}
 
-	w := wallet.NewWalletFromDTO(walletDTO)
+	wallet := walletDTO.ToDomain()
 
-	return w, nil
+	return wallet, nil
 }
